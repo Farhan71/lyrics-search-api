@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Hard Rock Solution - Song Lyric App</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container" id="body">
+        <nav class="navbar  navbar-dark my-3">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.png" alt="Hard Rock Solution">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                <img src="images/toggler-icon.svg" alt="">
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownId">
+                            <a class="dropdown-item" href="#">Action 1</a>
+                            <a class="dropdown-item" href="#">Action 2</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="content-area" id="main">
+            <div class="search-bar col-md-6 mx-auto">
+                <h1 class="text-center">Hard Rock Lyric Search</h1>
+                <div class="search-box my-5">
+                    <input id="input" type="text" class="form-control" placeholder="Enter your artist song name">
+                    <button id="submit" class="btn btn-success search-btn">Search</button>
+                </div>
+            </div>
+            <!-- Single Lyrics -->
+            
+            
+                <div id="content" class="search-result col-md-8 mx-auto py-4">
+                    <!-- <div class="single-result row align-items-center my-3 p-3">
+                        <div class="col-md-9">
+                            <h3 id="songName" class="lyrics-name">Purple Noon</h3>
+                            <p id="singerName" class="author lead">Album by <span>Washed Out</span></p>
+                        </div>
+                        <div class="col-md-3 text-md-right text-center">
+                            <button id="lyricsBtn" class="btn btn-success">Get Lyrics</button>
+                        </div>
+                    </div> -->
+                </div>
+
+               
+            
+            
+        </main>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Custom Script Here -->
+    <script>
+        // let input = document.getElementById("input")
+        let submit = document.getElementById("submit")
+        let songName = document.getElementById("songName")
+        let singerName = document.getElementById("singerName")
+        
+        // let content = document.getElementById("content")
+        let body = document.getElementById("body")
+        let main = document.getElementById("main")
+
+        submit.addEventListener("click", searchResult);
+
+        function searchResult(){
+            let content = document.getElementById("content")
+            content.innerHTML =" ";
+            let input = document.getElementById("input")
+            fetch (`https://api.lyrics.ovh/suggest/${input.value}`)
+            .then ( res => res.json())
+            .then (data => {
+                // console.log (data);
+
+                fetchData = data;
+
+                    for (let i=0; i<data.data.length; i++ ){ 
+                    // console.log(data.data[i].title);
+                    // console.log(data.data[i].artist.name)
+                    // console.log (data.data.length);
+                    
+                    let title = data.data[i].title
+                    let artist = data.data[i].artist.name
+
+                    // childHTML(title,artist,i);
+
+                    content.innerHTML += `<div class="single-result row align-items-center my-3 p-3">
+                        <div class="col-md-9">
+                            <h3 id="songName" class="lyrics-name">${title}</h3>
+                            <p id="singerName" class="author lead">Album by <span>${artist}</span></p>
+                        </div>
+                        <div class="col-md-3 text-md-right text-center">
+                            <button id="lyricsBtn" onClick="getLyrics(${i})" class="btn btn-success">Get Lyrics</button>
+                            
+                        </div>
+                    </div>
+                    <p id="lyricsTxt"  class="single-lyrics text-center"> </p>` ;
+
+                    if (i==9){
+                        break;
+                    }
+
+                   
+
+                
+                // main.appendChild(content)
+                // body.appendChild(main)
+
+                    
+
+                    // lyricsBtn.addEventListener("click",function(){
+                    //     fetch(`https://api.lyrics.ovh/v1/${data.data[i].artist.name}/${data.data[i].title}`)
+                    //     .then (res => res.json())
+                    //     .then (data => console.log (data))
+                    //     .catch ( err => console.log(err))
+                    // })
+
+                    
+                    // function lyrics (doc){
+                    
+                // }
+                // lyrics(lyricsBtn);
+
+                // let lyricsBtn = document.querySelector(".lyrics")
+                // lyricsBtn.addEventListener("click",function(){
+                //     getLyrics(i);
+                       
+                //         fetch(`https://api.lyrics.ovh/v1/${data.data[1].artist.name}/${data.data[1].title}`)
+                //         .then (res => res.json())
+                //         .then (data => console.log (data.lyrics))
+                //         .catch ( err => console.log(err))
+                //     })
+
+              }
+               
+                
+                
+            })
+            .catch ( err => alert ("Write Song Name Correctly!!!!"))
+        }
+
+        // function childHTML(t,a,ind){
+        //             let content = document.getElementById("content")
+        //                 var parent = document.createElement("div");
+        //             var child1 = document.createElement("div");
+        //             var child2 = document.createElement("div");
+        //             parent.appendChild(child1);
+        //             parent.appendChild(child2);
+        //             var child11 = document.createElement ("h3");
+        //             var child12 = document.createElement("p");
+        //             child1.appendChild (child11);
+        //             child1.appendChild(child12);
+        //             var child21 = document.createElement("button")
+        //             child2.appendChild(child21);
+        //             var child22 = document.createElement("div");
+        //             child2.appendChild(child22);
+
+        //             var child121 = document.createElement("span");
+        //             child12.appendChild(child121);
+
+
+        //             parent.classList.add('single-result', 'row', 'align-items-center', 'my-3', 'p-3');
+        //             child1.classList.add('col-md-9');
+        //             child2.classList.add('col-md-3' ,'text-md-right' ,'text-center');
+        //             child11.classList.add('lyrics-name');
+        //             child12.classList.add('author' ,'lead');
+        //             child21.classList.add('btn', 'btn-success' , 'lyrics')
+        //             child22.classList.add('lyricsTxt','single-result')
+                    
+
+        //             child11.innerHTML = t;
+        //             // child12.innerHTML = "Album by";
+        //             child121.innerHTML = "Album by" +"  "+ a;
+        //             child21.innerHTML = "Get Lyrics";
+
+        //             content.appendChild(parent);echo "# lyrics-search-api" >> README.md
+
+                    // document.querySelector("lyrics").addEventListener("click",getLyrics(ind))
+
+                    // }
+
+                    function getLyrics (index) {
+                            document.getElementById("lyricsTxt").innerHTML = "";
+                            const title = fetchData.data[index].title;
+                            const artist = fetchData.data[index].artist.name;
+
+                            fetch (`https://api.lyrics.ovh/v1/${artist}/${title}`)
+                            .then (res => res.json())
+                            .then (data => {
+                                const lyrics = data.lyrics;
+                                if (lyrics == undefined){
+                                    alert ("Lyrics Not Found!!!")
+                                }
+                                else {
+                                    document.getElementById("lyricsTxt").innerHTML = `<pre style="color: red;"> ${lyrics} </pre>`
+                                }
+                               
+                            })
+                    }
+
+        
+        
+       
+        
+
+    </script>
+
+</body>
+
+</html>
